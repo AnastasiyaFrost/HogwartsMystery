@@ -42,13 +42,13 @@ public class StudentController {
         } else{return ResponseEntity.status(HttpStatus.BAD_REQUEST).build();}
     }
     @GetMapping(path = "all")
-    public Map<Integer, Student> getAll(){
+    public Collection <Student> getAll(){
         return studentService.getAll();
     }
     ///
     @PutMapping
-    public ResponseEntity<Student> put(@RequestBody int id, Student student) {
-        Student putStudent = studentService.editStudent(id, student);
+    public ResponseEntity<Student> put(@RequestBody Student student) {
+        Student putStudent = studentService.editStudent(student);
         if(putStudent==null){
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).build();
         }
@@ -57,11 +57,7 @@ public class StudentController {
     ///
     @DeleteMapping
     public ResponseEntity<Student> delete(@RequestParam int id) {
-        Student deletedStudent = studentService.getAll().get(id);
-        if(deletedStudent==null){
-            return ResponseEntity.status(HttpStatus.BAD_REQUEST).build();
-        }
         studentService.deleteStudent(id);
-        return ResponseEntity.ok(deletedStudent);
+        return ResponseEntity.ok().build();
     }
 }

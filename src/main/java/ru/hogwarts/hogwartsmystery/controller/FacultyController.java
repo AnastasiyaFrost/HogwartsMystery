@@ -39,19 +39,19 @@ public class FacultyController {
         }
     }
     @GetMapping (path = "/all")
-    public Map<Integer, Faculty> getAll() {
+    public Collection <Faculty> getAll() {
         return facultyService.getAll();
     }
     @PutMapping
-    public ResponseEntity<Faculty> editFaculty(@RequestBody int id, Faculty faculty) {
-        Faculty foundFaculty = facultyService.editFaculty(id, faculty);
+    public ResponseEntity<Faculty> editFaculty(@RequestBody Faculty faculty) {
+        Faculty foundFaculty = facultyService.editFaculty(faculty);
         if (foundFaculty == null) {
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).build();
         }
         return ResponseEntity.ok(foundFaculty);
     }
     @DeleteMapping("{id}")
-    public ResponseEntity<Void> deleteFaculty(@PathVariable int id) {
+    public ResponseEntity<Faculty> deleteFaculty(@PathVariable int id) {
         facultyService.deleteFaculty(id);
         return ResponseEntity.ok().build();
     }

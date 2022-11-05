@@ -3,44 +3,42 @@ package ru.hogwarts.hogwartsmystery.service;
 import org.springframework.stereotype.Service;
 import ru.hogwarts.hogwartsmystery.model.Faculty;
 import ru.hogwarts.hogwartsmystery.model.Student;
+import ru.hogwarts.hogwartsmystery.repository.FacultyRepository;
+import ru.hogwarts.hogwartsmystery.repository.StudentRepository;
 
 import java.util.*;
 import java.util.stream.Collectors;
 
 @Service
 public class FacultyService {
-    private final HashMap<Integer, Faculty> faculties = new HashMap<>();
-    private int count = 0;
+    private FacultyRepository facultyRepository;
+    public FacultyService(FacultyRepository facultyRepository){
+        this.facultyRepository=facultyRepository;
+    }
 
     public Faculty addFaculty(Faculty faculty) {
-        faculty.setId(count++);
-        faculties.put(faculty.getId(), faculty);
-        return faculty;
+        return facultyRepository.save(faculty);
     }
 
     public Faculty getFaculty(int id) {
-        return faculties.get(id);
+        return facultyRepository.findById(id).get();
     }
 
-    public Faculty editFaculty(int id, Faculty faculty) {
-        if (!faculties.containsKey(id)) {
-            return null;
-        }
-        faculties.put(id, faculty);
-        return faculty;
+    public Faculty editFaculty(Faculty faculty) {
+        return facultyRepository.save(faculty);
     }
 
-    public Faculty deleteFaculty(int id) {
-        return faculties.remove(id);
+    public void deleteFaculty(int id) {
+        facultyRepository.deleteById(id);
     }
 
-    public Map<Integer, Faculty> getAll() {
-        return faculties;
+    public Collection<Faculty> getAll() {
+        return facultyRepository.findAll();
     }
 
     public Collection<Faculty> getByColor(String color) {
         ArrayList<Faculty> result = new ArrayList<>();
-        for (Faculty faculty : faculties.values()) {
+        for (Faculty faculty : facultyRepository.findAll()) {
             if (Objects.equals(faculty.getColor(), color)) {
                 result.add(faculty);
             }

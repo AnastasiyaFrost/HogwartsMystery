@@ -1,9 +1,15 @@
 package ru.hogwarts.hogwartsmystery.model;
 
-import java.util.Objects;
+import org.springframework.data.annotation.Id;
 
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import java.util.Objects;
+@Entity
 public class Faculty {
-    private int id = 0;
+    @Id
+    @GeneratedValue
+    private int id;
     private String name;
     private String color;
 
