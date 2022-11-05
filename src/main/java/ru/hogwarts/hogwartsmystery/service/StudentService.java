@@ -12,21 +12,23 @@ import java.util.stream.Collectors;
 @Service
 public class StudentService {
     Map<Integer, Student> students = new HashMap<>();
+    private int count = 0;
 
     public Student addStudent(Student student) {
-        Student student1 = new Student(student.getName(), student.getAge());
-        students.put(student1.getId(), student1);
-        return student1;
+        student.setId(count++);
+        students.put(student.getId(), student);
+        return student;
     }
 
     public Student getStudent(int id) {
-        if(id<=0){return null;}
         return students.get(id);
     }
 
     public Student editStudent(int id, Student student){
-        Student student1 = students.get(id);
-        student1 = student;
+        if (!students.containsKey(id)) {
+            return null;
+        }
+        students.put(id, student);
         return student;
     }
 
