@@ -1,14 +1,10 @@
 package ru.hogwarts.hogwartsmystery.service;
 
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import ru.hogwarts.hogwartsmystery.model.Student;
 import ru.hogwarts.hogwartsmystery.repository.StudentRepository;
 
 import java.util.Collection;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
 import java.util.stream.Collectors;
 
 @Service

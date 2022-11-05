@@ -2,12 +2,9 @@ package ru.hogwarts.hogwartsmystery.service;
 
 import org.springframework.stereotype.Service;
 import ru.hogwarts.hogwartsmystery.model.Faculty;
-import ru.hogwarts.hogwartsmystery.model.Student;
 import ru.hogwarts.hogwartsmystery.repository.FacultyRepository;
-import ru.hogwarts.hogwartsmystery.repository.StudentRepository;
 
 import java.util.*;
-import java.util.stream.Collectors;
 
 @Service
 public class FacultyService {

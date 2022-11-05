@@ -7,9 +7,10 @@ import javax.persistence.GeneratedValue;
 import java.util.Objects;
 @Entity
 public class Student {
+    @javax.persistence.Id
     @Id
     @GeneratedValue
-    private int id;
+    protected int id;
 
     private String name;
     private int age;

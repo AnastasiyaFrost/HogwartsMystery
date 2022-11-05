@@ -7,14 +7,14 @@ import javax.persistence.GeneratedValue;
 import java.util.Objects;
 @Entity
 public class Faculty {
+    @javax.persistence.Id
     @Id
     @GeneratedValue
-    private int id;
+    protected int id;
     private String name;
     private String color;
 
-    public Faculty(int id, String name, String color) {
-        this.id = id;
+    public Faculty(String name, String color) {
         this.name = name;
         this.color = color;
     }
