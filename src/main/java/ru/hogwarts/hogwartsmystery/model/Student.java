@@ -1,13 +1,11 @@
 package ru.hogwarts.hogwartsmystery.model;
 
-import org.springframework.data.annotation.Id;
-
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
+import javax.persistence.Id;
 import java.util.Objects;
 @Entity
 public class Student {
-    @javax.persistence.Id
     @Id
     @GeneratedValue
     protected int id;
@@ -19,6 +17,10 @@ public class Student {
         this.id = id;
         this.name = name;
         this.age = age;
+    }
+
+    public Student() {
+
     }
 
     public int getId() {
@@ -66,4 +68,5 @@ public class Student {
                 ", age=" + age +
                 '}';
     }
+
 }

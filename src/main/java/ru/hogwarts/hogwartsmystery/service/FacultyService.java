@@ -5,6 +5,7 @@ import ru.hogwarts.hogwartsmystery.model.Faculty;
 import ru.hogwarts.hogwartsmystery.repository.FacultyRepository;
 
 import java.util.*;
+import java.util.stream.Collectors;
 
 @Service
 public class FacultyService {
@@ -18,11 +19,14 @@ public class FacultyService {
     }
 
     public Faculty getFaculty(int id) {
-        return facultyRepository.findById(id).get();
+        return facultyRepository.findById(id).orElse(null);
     }
 
     public Faculty editFaculty(Faculty faculty) {
-        return facultyRepository.save(faculty);
+        if(!facultyRepository.existsById(faculty.getId())) {
+            return null;
+        } else return facultyRepository.save(faculty);
+
     }
 
     public void deleteFaculty(int id) {
@@ -34,12 +38,6 @@ public class FacultyService {
     }
 
     public Collection<Faculty> getByColor(String color) {
-        ArrayList<Faculty> result = new ArrayList<>();
-        for (Faculty faculty : facultyRepository.findAll()) {
-            if (Objects.equals(faculty.getColor(), color)) {
-                result.add(faculty);
-            }
-        }
-        return result;
+        return new ArrayList<>(facultyRepository.findAllByColor(color));
     }
 }

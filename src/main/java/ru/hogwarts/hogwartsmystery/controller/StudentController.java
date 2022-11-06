@@ -50,7 +50,7 @@ public class StudentController {
     public ResponseEntity<Student> put(@RequestBody Student student) {
         Student putStudent = studentService.editStudent(student);
         if(putStudent==null){
-            return ResponseEntity.status(HttpStatus.BAD_REQUEST).build();
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).build();
         }
         return ResponseEntity.ok(putStudent);
     }

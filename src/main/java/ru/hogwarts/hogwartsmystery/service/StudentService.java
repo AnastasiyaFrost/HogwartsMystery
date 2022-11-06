@@ -4,6 +4,7 @@ import org.springframework.stereotype.Service;
 import ru.hogwarts.hogwartsmystery.model.Student;
 import ru.hogwarts.hogwartsmystery.repository.StudentRepository;
 
+import java.util.ArrayList;
 import java.util.Collection;
 import java.util.stream.Collectors;
 
@@ -18,10 +19,11 @@ public class StudentService {
     }
 
     public Student getStudent(int id) {
-        return studentRepository.findById(id).get();
+        return studentRepository.findById(id).orElse(null);
     }
 
     public Student editStudent(Student student){
+        if(!studentRepository.existsById(student.getId())) {return null;}
         return studentRepository.save(student);
     }
 
@@ -34,8 +36,6 @@ public class StudentService {
     }
 
     public Collection<Student> getByAge(int age) {
-        return studentRepository.findAll().stream()
-                .filter(e -> e.getAge()==age)
-                .collect(Collectors.toList());
+        return new ArrayList<>(studentRepository.findAllByAge(age));
     }
 }

@@ -1,22 +1,25 @@
 package ru.hogwarts.hogwartsmystery.model;
 
-import org.springframework.data.annotation.Id;
-
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
+import javax.persistence.Id;
 import java.util.Objects;
 @Entity
 public class Faculty {
-    @javax.persistence.Id
     @Id
     @GeneratedValue
-    protected int id;
+    private int id;
     private String name;
     private String color;
 
-    public Faculty(String name, String color) {
+    public Faculty(int id, String name, String color) {
+        this.id=id;
         this.name = name;
         this.color = color;
+    }
+
+    public Faculty() {
+
     }
 
     public int getId() {
@@ -64,4 +67,5 @@ public class Faculty {
                 ", color='" + color + '\'' +
                 '}';
     }
+
 }
