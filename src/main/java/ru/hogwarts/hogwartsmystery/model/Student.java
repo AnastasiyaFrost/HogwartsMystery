@@ -1,21 +1,37 @@
 package ru.hogwarts.hogwartsmystery.model;
 
+import javax.persistence.*;
 import java.util.Objects;
 
+@Entity
 public class Student {
-    private int id;
-    private int counter = 1;
+    @Id
+    @GeneratedValue (strategy = GenerationType.IDENTITY)
+    protected int id;
+
     private String name;
     private int age;
+    @ManyToOne (fetch = FetchType.LAZY)
+    @JoinColumn(name = "faculty_id")
+    private Faculty faculty;
 
-    public Student(String name, int age) {
-        this.id = counter++;
+    public Student(int id, String name, int age, Faculty faculty) {
+        this.id = id;
         this.name = name;
         this.age = age;
+        this.faculty = faculty;
+    }
+
+    public Student() {
+
     }
 
     public int getId() {
         return id;
+    }
+
+    public void setId(int id) {
+        this.id = id;
     }
 
     public String getName() {
@@ -32,6 +48,10 @@ public class Student {
 
     public void setAge(int age) {
         this.age = age;
+    }
+
+    public Faculty getFaculty() {
+        return faculty;
     }
 
     @Override
@@ -55,4 +75,5 @@ public class Student {
                 ", age=" + age +
                 '}';
     }
+
 }

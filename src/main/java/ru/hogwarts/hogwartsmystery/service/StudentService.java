@@ -2,51 +2,43 @@ package ru.hogwarts.hogwartsmystery.service;
 
 import org.springframework.stereotype.Service;
 import ru.hogwarts.hogwartsmystery.model.Student;
+import ru.hogwarts.hogwartsmystery.repository.StudentRepository;
 
+import java.util.ArrayList;
 import java.util.Collection;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-import java.util.stream.Collectors;
 
 @Service
 public class StudentService {
-    Map<Integer, Student> students = new HashMap<>();
-
+    private StudentRepository studentRepository;
+    public StudentService(StudentRepository studentRepository){
+        this.studentRepository=studentRepository;
+    }
     public Student addStudent(Student student) {
-        Student student1 = new Student(student.getName(), student.getAge());
-        students.put(student1.getId(), student1);
-        return student1;
+        return studentRepository.save(student);
     }
 
     public Student getStudent(int id) {
-        if(id<=0){return null;}
-        return students.get(id);
+        return studentRepository.findById(id).orElse(null);
     }
 
-    public Student editStudent(int id, Student student){
-        Student student1 = students.get(id);
-        student1 = student;
-        return student;
+    public Student editStudent(Student student){
+        if(!studentRepository.existsById(student.getId())) {return null;}
+        return studentRepository.save(student);
     }
 
-    public Student deleteStudent(int id) {
-        Student deletedStudent = students.get(id);
-        if(deletedStudent==null) {
-            return null;
-        } else {
-            students.remove(id);
-            return deletedStudent;
-        }
+    public void deleteStudent(int id) {
+        studentRepository.deleteById(id);
     }
 
-    public Map<Integer, Student> getAll() {
-        return students;
+    public Collection<Student> getAll() {
+        return studentRepository.findAll();
     }
 
     public Collection<Student> getByAge(int age) {
-        return students.values().stream()
-                .filter(e -> e.getAge()==age)
-                .collect(Collectors.toList());
+        return new ArrayList<>(studentRepository.findAllByAge(age));
+    }
+
+    public Collection<Student> getByAgeBetween(int minAge, int maxAge) {
+        return new ArrayList<>(studentRepository.findAllByAgeBetween(minAge, maxAge));
     }
 }
