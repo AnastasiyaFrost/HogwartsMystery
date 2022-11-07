@@ -1,27 +1,32 @@
 package ru.hogwarts.hogwartsmystery.model;
 
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.Id;
+import javax.persistence.*;
+import java.util.Collection;
+import java.util.List;
 import java.util.Objects;
+import java.util.Set;
+
 @Entity
 public class Faculty {
     @Id
-    @GeneratedValue
+    @GeneratedValue (strategy = GenerationType.IDENTITY)
     private int id;
     private String name;
     private String color;
+@OneToMany(mappedBy = "faculty")
+    private Set<Student> students;
 
-    public Faculty(int id, String name, String color) {
-        this.id=id;
+    public Faculty(int id, String name, String color, Set<Student> students) {
+        this.id = id;
         this.name = name;
         this.color = color;
+        this.students = students;
     }
 
     public Faculty() {
 
     }
-
+public Set<Student> getStudents() {return students;}
     public int getId() {
         return id;
     }

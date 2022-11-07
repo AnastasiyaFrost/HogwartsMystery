@@ -6,7 +6,6 @@ import ru.hogwarts.hogwartsmystery.repository.StudentRepository;
 
 import java.util.ArrayList;
 import java.util.Collection;
-import java.util.stream.Collectors;
 
 @Service
 public class StudentService {
@@ -37,5 +36,9 @@ public class StudentService {
 
     public Collection<Student> getByAge(int age) {
         return new ArrayList<>(studentRepository.findAllByAge(age));
+    }
+
+    public Collection<Student> getByAgeBetween(int minAge, int maxAge) {
+        return new ArrayList<>(studentRepository.findAllByAgeBetween(minAge, maxAge));
     }
 }
