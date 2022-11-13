@@ -1,21 +1,40 @@
 package ru.hogwarts.hogwartsmystery.model;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
+import javax.persistence.*;
 import java.util.Objects;
 
+@Entity
 public class Student {
-    private int id;
-    private int counter = 1;
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    protected int id;
+
     private String name;
     private int age;
+    @JsonIgnore
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "faculty_id")
+    private Faculty faculty;
 
-    public Student(String name, int age) {
-        this.id = counter++;
+    public Student(int id, String name, int age, Faculty faculty) {
+        this.id = id;
         this.name = name;
         this.age = age;
+        this.faculty = faculty;
+    }
+
+    public Student() {
+
     }
 
     public int getId() {
         return id;
+    }
+
+    public void setId(int id) {
+        this.id = id;
     }
 
     public String getName() {
@@ -34,17 +53,21 @@ public class Student {
         this.age = age;
     }
 
+    public Faculty getFaculty() {
+       return faculty;
+    }
+
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         Student student = (Student) o;
-        return age == student.age && Objects.equals(id, student.id) && Objects.equals(name, student.name);
+        return id == student.id;
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(id, name, age);
+        return Objects.hash(id);
     }
 
     @Override
@@ -55,4 +78,5 @@ public class Student {
                 ", age=" + age +
                 '}';
     }
+
 }
