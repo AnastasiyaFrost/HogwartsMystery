@@ -25,7 +25,6 @@ public class AvatarService {
     }
     public Collection<Avatar> getAllAvatars(Integer pageNumber, Integer pageSize) {
         PageRequest pageRequest = PageRequest.of(pageNumber - 1, pageSize);
-        return (Collection<Avatar>) avatarRepository.findAll(pageRequest);
+        return avatarRepository.findAll(pageRequest).getContent();
     }
-    //public void uploadAvatar(int studentId)
 }

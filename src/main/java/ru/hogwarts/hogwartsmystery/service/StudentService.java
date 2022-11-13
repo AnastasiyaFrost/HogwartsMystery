@@ -62,7 +62,7 @@ public class StudentService {
     public Collection<Student> getByAge(int age) {
         return new ArrayList<>(studentRepository.findAllByAge(age));
     }
-    public int findAVGAgeFromAllStudents(){
+    public double findAVGAgeFromAllStudents(){
         return studentRepository.findAVGAge();
     }
 
