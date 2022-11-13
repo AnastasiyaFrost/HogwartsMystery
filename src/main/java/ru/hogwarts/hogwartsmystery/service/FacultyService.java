@@ -1,12 +1,10 @@
 package ru.hogwarts.hogwartsmystery.service;
 
 import org.springframework.stereotype.Service;
-import ru.hogwarts.hogwartsmystery.InvalidInputException;
 import ru.hogwarts.hogwartsmystery.model.Faculty;
 import ru.hogwarts.hogwartsmystery.repository.FacultyRepository;
 
 import java.util.*;
-import java.util.stream.Collectors;
 
 @Service
 public class FacultyService {

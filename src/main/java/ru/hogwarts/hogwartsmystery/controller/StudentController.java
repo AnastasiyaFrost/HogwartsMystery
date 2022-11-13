@@ -31,7 +31,7 @@ public class StudentController {
 
     /////
     @PostMapping
-    public ResponseEntity<Student> add(@RequestBody Student student) {
+    public ResponseEntity<Student> add(@RequestBody(required = false) Student student) {
         Student addedStudent = studentService.addStudent(student);
         if (addedStudent == null) {
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).build();
@@ -73,6 +73,8 @@ public class StudentController {
     }
 
     ////
+    @GetMapping("/total")
+    public int countTotalAmountStudents() {return studentService.countTotalAmountStudents();}
     @GetMapping
     public ResponseEntity<Student> get(@RequestParam int id) {
         Student gettingStudent = studentService.getStudent(id);
@@ -95,6 +97,10 @@ public class StudentController {
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).build();
         }
     }
+    @GetMapping("/avg")
+    public int findAVGAgeFromAllStudents(){
+        return studentService.findAVGAgeFromAllStudents();
+    }
 
     @GetMapping(path = "byage")
     public Collection<Student> getBetwAges(@RequestParam int minAge, @RequestParam int maxAge) {
@@ -104,6 +110,11 @@ public class StudentController {
     @GetMapping(path = "all")
     public Collection<Student> getAll() {
         return studentService.getAll();
+    }
+
+    @GetMapping(path = "/last5")
+    public Collection<Student> getLast5Students() {
+        return studentService.getLast5Students();
     }
 
     ///

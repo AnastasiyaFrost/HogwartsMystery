@@ -22,20 +22,28 @@ public class StudentService {
     private String avatarsDir;
     private final StudentRepository studentRepository;
     private final AvatarRepository avatarRepository;
-    public StudentService(StudentRepository studentRepository, AvatarRepository avatarRepository){
-        this.studentRepository=studentRepository;
+
+    public StudentService(StudentRepository studentRepository, AvatarRepository avatarRepository) {
+        this.studentRepository = studentRepository;
         this.avatarRepository = avatarRepository;
     }
+
     public Student addStudent(Student student) {
-        return studentRepository.save(student);
+
+        Student newStudent = new Student();
+        newStudent.setName(student.getName());
+        newStudent.setAge(student.getAge());
+        return studentRepository.save(newStudent);
     }
 
     public Student getStudent(int id) {
         return studentRepository.findById(id).orElse(null);
     }
 
-    public Student editStudent(Student student){
-        if(!studentRepository.existsById(student.getId())) {return null;}
+    public Student editStudent(Student student) {
+        if (!studentRepository.existsById(student.getId())) {
+            return null;
+        }
         return studentRepository.save(student);
     }
 
@@ -46,14 +54,22 @@ public class StudentService {
     public Collection<Student> getAll() {
         return studentRepository.findAll();
     }
+    public Collection<Student> getLast5Students() {
+        return studentRepository.findLast5Students();
+    }
+    public int countTotalAmountStudents() {return studentRepository.countAllFromSchool();}
 
     public Collection<Student> getByAge(int age) {
         return new ArrayList<>(studentRepository.findAllByAge(age));
+    }
+    public int findAVGAgeFromAllStudents(){
+        return studentRepository.findAVGAge();
     }
 
     public Collection<Student> getByAgeBetween(int minAge, int maxAge) {
         return new ArrayList<>(studentRepository.findAllByAgeBetween(minAge, maxAge));
     }
+
     public Avatar findAvatar(int studentId) {
         return avatarRepository.findByStudentId(studentId).orElseThrow();
     }

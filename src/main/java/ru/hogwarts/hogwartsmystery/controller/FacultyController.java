@@ -32,6 +32,7 @@ public class FacultyController {
         }
         return ResponseEntity.ok(faculty);
     }
+
     @GetMapping ("/students")
     public Set<Student> getStudents(@RequestParam int id) {return facultyService.getFaculty(id).getStudents();}
     @GetMapping("/color")
