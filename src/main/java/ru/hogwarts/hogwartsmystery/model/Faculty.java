@@ -12,14 +12,14 @@ import java.util.Set;
 public class Faculty {
     @Id
     @GeneratedValue (strategy = GenerationType.IDENTITY)
-    private int id;
+    private long id;
     private String name;
     private String color;
     @JsonIgnore
     @OneToMany(mappedBy = "faculty")
   private Set<Student> students;
 
-    public Faculty(int id, String name, String color, Set<Student> students) {
+    public Faculty(long id, String name, String color, Set<Student> students) {
         this.id = id;
         this.name = name;
         this.color = color;
@@ -30,11 +30,11 @@ public class Faculty {
 
     }
  public Set<Student> getStudents() {return students;}
-    public int getId() {
+    public long getId() {
         return id;
     }
 
-    public void setId(int id) {
+    public void setId(long id) {
         this.id = id;
     }
 

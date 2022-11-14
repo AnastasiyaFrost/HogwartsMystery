@@ -8,7 +8,7 @@ import java.util.Objects;
 public class Avatar {
     @Id
     @GeneratedValue (strategy = GenerationType.IDENTITY)
-    private int id;
+    private long id;
     private String filePath;
     private long fileSize;
     private String mediaType;
@@ -17,7 +17,7 @@ public class Avatar {
     @OneToOne
     private Student student;
 
-    public Avatar(int id, String filePath, long fileSize, String mediaType, byte[] data, Student student) {
+    public Avatar(long id, String filePath, long fileSize, String mediaType, byte[] data, Student student) {
         this.id = id;
         this.filePath = filePath;
         this.fileSize = fileSize;
@@ -57,11 +57,11 @@ public class Avatar {
                 '}';
     }
 
-    public int getId() {
+    public long getId() {
         return id;
     }
 
-    public void setId(int id) {
+    public void setId(long id) {
         this.id = id;
     }
 

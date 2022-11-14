@@ -1,7 +1,7 @@
 CREATE TABLE cars (
     id SERIAL PRIMARY KEY,
-    car brand VARCHAR,
-    car model VARCHAR,
+    car_brand VARCHAR,
+    car_model VARCHAR,
     price NUMERIC(9,2));
 
 CREATE TABLE persons (

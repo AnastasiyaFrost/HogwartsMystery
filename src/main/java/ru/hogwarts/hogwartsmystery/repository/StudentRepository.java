@@ -6,11 +6,11 @@ import ru.hogwarts.hogwartsmystery.model.Student;
 
 import java.util.Collection;
 
-public interface StudentRepository extends JpaRepository<Student, Integer> {
+public interface StudentRepository extends JpaRepository<Student, Long> {
     Collection<Student> findAllByAge(int age);
 
     Collection<Student> findAllByAgeBetween(int minAge, int maxAge);
-    @Query(value = "SELECT id, COUNT(id) FROM student", nativeQuery = true)
+    @Query(value = "SELECT COUNT(id) FROM student", nativeQuery = true)
     int countAllFromSchool();
 
     @Query(value = "SELECT AVG(age) FROM student", nativeQuery = true)
@@ -18,7 +18,4 @@ public interface StudentRepository extends JpaRepository<Student, Integer> {
 
     @Query(value = "SELECT * FROM student ORDER BY id DESC LIMIT 5", nativeQuery = true)
     Collection<Student> findLast5Students();
-    //SELECT COUNT(student.id) FROM student
-    //SELECT AVG(age) FROM student
-    //SELECT * FROM student ORDER BY id DESC LIMIT 5
 }

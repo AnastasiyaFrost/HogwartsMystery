@@ -46,6 +46,31 @@ public class StudentController {
         studentService.uploadAvatar(id, avatar);
         return ResponseEntity.ok().build();
     }
+    @GetMapping(value = "/{id}/avatar/preview")
+    public ResponseEntity<byte[]> downloadAvatar(@PathVariable int id) {
+        Avatar avatar = studentService.findAvatar(id);
+
+        HttpHeaders headers = new HttpHeaders();
+        headers.setContentType(MediaType.parseMediaType(avatar.getMediaType()));
+        headers.setContentLength(avatar.getData().length);
+
+        return ResponseEntity.status(HttpStatus.OK).headers(headers).body(avatar.getData());
+    }
+
+    @GetMapping(value = "/{id}/avatar")
+    public void downloadAvatar(@PathVariable int id, HttpServletResponse response) throws IOException {
+        Avatar avatar = studentService.findAvatar(id);
+
+        Path path = Path.of(avatar.getFilePath());
+
+        try (InputStream is = Files.newInputStream(path);
+             OutputStream os = response.getOutputStream();) {
+            response.setStatus(200);
+            response.setContentType(avatar.getMediaType());
+            response.setContentLength((int) avatar.getFileSize());
+            is.transferTo(os);
+        }
+    }
 
     ////
     @GetMapping("/total")
@@ -73,7 +98,7 @@ public class StudentController {
         }
     }
     @GetMapping("/avg")
-    public double findAVGAgeFromAllStudents(){
+    public int findAVGAgeFromAllStudents(){
         return studentService.findAVGAgeFromAllStudents();
     }
 

@@ -36,7 +36,7 @@ public class StudentService {
         return studentRepository.save(newStudent);
     }
 
-    public Student getStudent(int id) {
+    public Student getStudent(long id) {
         return studentRepository.findById(id).orElse(null);
     }
 
@@ -47,7 +47,7 @@ public class StudentService {
         return studentRepository.save(student);
     }
 
-    public void deleteStudent(int id) {
+    public void deleteStudent(long id) {
         studentRepository.deleteById(id);
     }
 
@@ -70,11 +70,11 @@ public class StudentService {
         return new ArrayList<>(studentRepository.findAllByAgeBetween(minAge, maxAge));
     }
 
-    public Avatar findAvatar(int studentId) {
+    public Avatar findAvatar(long studentId) {
         return avatarRepository.findByStudentId(studentId).orElseThrow();
     }
 
-    public void uploadAvatar(int studentId, MultipartFile file) throws IOException {
+    public void uploadAvatar(long studentId, MultipartFile file) throws IOException {
         Student student = getStudent(studentId);
 
         Path filePath = Path.of(avatarsDir, studentId + "." + getExtension(file.getOriginalFilename()));

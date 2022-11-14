@@ -5,7 +5,7 @@ import ru.hogwarts.hogwartsmystery.model.Faculty;
 
 import java.util.Collection;
 
-public interface FacultyRepository extends JpaRepository<Faculty, Integer> {
+public interface FacultyRepository extends JpaRepository<Faculty, Long> {
     Collection<Faculty> findAllByColor(String color);
 
     Faculty findFacultyByNameOrColorIgnoreCase(String name, String color);
