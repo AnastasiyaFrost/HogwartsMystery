@@ -98,7 +98,7 @@ public class StudentController {
         }
     }
     @GetMapping("/avg")
-    public int findAVGAgeFromAllStudents(){
+    public double findAVGAgeFromAllStudents(){
         return studentService.findAVGAgeFromAllStudents();
     }
 
