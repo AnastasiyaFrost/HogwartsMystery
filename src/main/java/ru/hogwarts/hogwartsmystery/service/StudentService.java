@@ -62,6 +62,9 @@ public class StudentService {
     public Collection<Student> getByAge(int age) {
         return new ArrayList<>(studentRepository.findAllByAge(age));
     }
+    public Collection<Student> getByName(String name) {
+        return new ArrayList<>(studentRepository.findStudentsByName(name));
+    }
     public double findAVGAgeFromAllStudents(){
         return studentRepository.findAVGAge();
     }

@@ -97,6 +97,11 @@ public class StudentController {
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).build();
         }
     }
+    @GetMapping("{name}")
+    public ResponseEntity<Collection<Student>> getByName(@RequestParam String name) {
+        return ResponseEntity.ok(studentService.getByName(name));
+
+    }
     @GetMapping("/avg")
     public double findAVGAgeFromAllStudents(){
         return studentService.findAVGAgeFromAllStudents();
