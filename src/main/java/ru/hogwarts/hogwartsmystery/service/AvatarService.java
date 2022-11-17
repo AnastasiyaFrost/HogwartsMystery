@@ -1,5 +1,7 @@
 package ru.hogwarts.hogwartsmystery.service;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.data.domain.PageRequest;
@@ -13,6 +15,7 @@ import java.util.Collection;
 @Service
 @Transactional
 public class AvatarService {
+    Logger logger = LoggerFactory.getLogger(AvatarService.class);
     @Value ("${avatars.dir.path}")
     private String avatarsDir;
     @Autowired
@@ -24,6 +27,7 @@ public class AvatarService {
         this.avatarRepository = avatarRepository;
     }
     public Collection<Avatar> getAllAvatars(Integer pageNumber, Integer pageSize) {
+        logger.info("Was invoked method for get all avatars");
         PageRequest pageRequest = PageRequest.of(pageNumber - 1, pageSize);
         return avatarRepository.findAll(pageRequest).getContent();
     }
