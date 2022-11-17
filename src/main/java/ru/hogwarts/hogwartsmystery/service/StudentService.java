@@ -1,52 +1,108 @@
 package ru.hogwarts.hogwartsmystery.service;
 
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
+import org.springframework.web.multipart.MultipartFile;
+import ru.hogwarts.hogwartsmystery.model.Avatar;
 import ru.hogwarts.hogwartsmystery.model.Student;
+import ru.hogwarts.hogwartsmystery.repository.AvatarRepository;
+import ru.hogwarts.hogwartsmystery.repository.StudentRepository;
 
+import java.io.*;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.util.ArrayList;
 import java.util.Collection;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-import java.util.stream.Collectors;
+
+import static java.nio.file.StandardOpenOption.CREATE_NEW;
 
 @Service
 public class StudentService {
-    Map<Integer, Student> students = new HashMap<>();
+    @Value("${avatars.dir.path}")
+    private String avatarsDir;
+    private final StudentRepository studentRepository;
+    private final AvatarRepository avatarRepository;
+
+    public StudentService(StudentRepository studentRepository, AvatarRepository avatarRepository) {
+        this.studentRepository = studentRepository;
+        this.avatarRepository = avatarRepository;
+    }
 
     public Student addStudent(Student student) {
-        Student student1 = new Student(student.getName(), student.getAge());
-        students.put(student1.getId(), student1);
-        return student1;
+
+        Student newStudent = new Student();
+        newStudent.setName(student.getName());
+        newStudent.setAge(student.getAge());
+        return studentRepository.save(newStudent);
     }
 
-    public Student getStudent(int id) {
-        if(id<=0){return null;}
-        return students.get(id);
+    public Student getStudent(long id) {
+        return studentRepository.findById(id).orElse(null);
     }
 
-    public Student editStudent(int id, Student student){
-        Student student1 = students.get(id);
-        student1 = student;
-        return student;
-    }
-
-    public Student deleteStudent(int id) {
-        Student deletedStudent = students.get(id);
-        if(deletedStudent==null) {
+    public Student editStudent(Student student) {
+        if (!studentRepository.existsById(student.getId())) {
             return null;
-        } else {
-            students.remove(id);
-            return deletedStudent;
         }
+        return studentRepository.save(student);
     }
 
-    public Map<Integer, Student> getAll() {
-        return students;
+    public void deleteStudent(long id) {
+        studentRepository.deleteById(id);
     }
+
+    public Collection<Student> getAll() {
+        return studentRepository.findAll();
+    }
+    public Collection<Student> getLast5Students() {
+        return studentRepository.findLast5Students();
+    }
+    public int countTotalAmountStudents() {return studentRepository.countAllFromSchool();}
 
     public Collection<Student> getByAge(int age) {
-        return students.values().stream()
-                .filter(e -> e.getAge()==age)
-                .collect(Collectors.toList());
+        return new ArrayList<>(studentRepository.findAllByAge(age));
+    }
+    public Collection<Student> getByName(String name) {
+        return new ArrayList<>(studentRepository.findStudentsByName(name));
+    }
+    public double findAVGAgeFromAllStudents(){
+        return studentRepository.findAVGAge();
+    }
+
+    public Collection<Student> getByAgeBetween(int minAge, int maxAge) {
+        return new ArrayList<>(studentRepository.findAllByAgeBetween(minAge, maxAge));
+    }
+
+    public Avatar findAvatar(long studentId) {
+        return avatarRepository.findByStudentId(studentId).orElseThrow();
+    }
+
+    public void uploadAvatar(long studentId, MultipartFile file) throws IOException {
+        Student student = getStudent(studentId);
+
+        Path filePath = Path.of(avatarsDir, studentId + "." + getExtension(file.getOriginalFilename()));
+        Files.createDirectories(filePath.getParent());
+        Files.deleteIfExists(filePath);
+
+        try (InputStream is = file.getInputStream();
+             OutputStream os = Files.newOutputStream(filePath, CREATE_NEW);
+             BufferedInputStream bis = new BufferedInputStream(is, 1024);
+             BufferedOutputStream bos = new BufferedOutputStream(os, 1024);
+        ) {
+            bis.transferTo(bos);
+        }
+
+        Avatar avatar = avatarRepository.findByStudentId(studentId).orElseGet(Avatar::new);
+        avatar.setStudent(student);
+        avatar.setFilePath(filePath.toString());
+        avatar.setFileSize(file.getSize());
+        avatar.setMediaType(file.getContentType());
+        avatar.setData(file.getBytes());
+
+        avatarRepository.save(avatar);
+    }
+
+    private String getExtension(String fileName) {
+        return fileName.substring(fileName.lastIndexOf(".") + 1);
     }
 }
