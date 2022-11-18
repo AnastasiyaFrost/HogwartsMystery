@@ -18,6 +18,7 @@ import java.io.OutputStream;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.util.Collection;
+import java.util.List;
 import java.util.Map;
 
 @RestController
@@ -100,6 +101,10 @@ public class StudentController {
     @GetMapping("{name}")
     public ResponseEntity<Collection<Student>> getByName(@RequestParam String name) {
         return ResponseEntity.ok(studentService.getByName(name));
+    }
+    @GetMapping("/nameA")
+    public ResponseEntity<List<String>> getAllNamesStartsWithA() {
+        return ResponseEntity.ok(studentService.getAllNamesStartsWithAInOrderInUpperCase());
 
     }
     @GetMapping("/avg")

@@ -3,6 +3,7 @@ package ru.hogwarts.hogwartsmystery.service;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
+import ru.hogwarts.hogwartsmystery.FacultyNotFoundException;
 import ru.hogwarts.hogwartsmystery.model.Faculty;
 import ru.hogwarts.hogwartsmystery.repository.FacultyRepository;
 
@@ -53,5 +54,13 @@ public class FacultyService {
     public Faculty getByNameOrColorIgnoreCase(String name, String color) {
         logger.info("Was invoked method for get faculty by name or color ignore case");
         return facultyRepository.findFacultyByNameOrColorIgnoreCase(name, color);
+    }
+
+    public String getLongestName() {
+        logger.info("Was invoked method for get longest faculty`s name");
+        Faculty findFaculty = facultyRepository.findAll().stream()
+                .max(Comparator.comparingInt(e -> e.getName().length()))
+                .orElseThrow(FacultyNotFoundException::new);
+        return findFaculty.getName();
     }
 }

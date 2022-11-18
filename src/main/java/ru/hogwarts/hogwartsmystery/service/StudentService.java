@@ -15,6 +15,8 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.List;
+import java.util.stream.Collectors;
 
 import static java.nio.file.StandardOpenOption.CREATE_NEW;
 
@@ -80,9 +82,22 @@ public class StudentService {
         logger.info("Was invoked method for get students by name");
         return new ArrayList<>(studentRepository.findStudentsByName(name));
     }
+    public List<String> getAllNamesStartsWithAInOrderInUpperCase() {
+        logger.info("Was invoked method for get all names starts with A");
+         return studentRepository.findAll().stream()
+                .filter(e -> e.getName().startsWith("A"))
+                .map(e -> e.getName().toUpperCase())
+                .sorted()
+                .collect(Collectors.toList());
+    }
+
     public double findAVGAgeFromAllStudents(){
         logger.info("Was invoked method for find average age from all students");
-        return studentRepository.findAVGAge();
+        //return studentRepository.findAVGAge();
+        return studentRepository.findAll().stream()
+                .mapToDouble(Student::getAge)
+                .average()
+                .getAsDouble();
     }
 
     public Collection<Student> getByAgeBetween(int minAge, int maxAge) {
@@ -125,4 +140,5 @@ public class StudentService {
         logger.info("Was invoked method for get extension");
         return fileName.substring(fileName.lastIndexOf(".") + 1);
     }
+
 }

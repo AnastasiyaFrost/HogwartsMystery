@@ -34,7 +34,8 @@ public class FacultyController {
     }
 
     @GetMapping ("/students")
-    public Set<Student> getStudents(@RequestParam long id) {return facultyService.getFaculty(id).getStudents();}
+    public Set<Student> getStudents(@RequestParam long facultyId) {return facultyService
+            .getFaculty(facultyId).getStudents();}
     @GetMapping("/color")
     public ResponseEntity<Collection<Faculty>> getByColor(@RequestParam(required = false) String color) {
         if(!(color ==null)&&!(color.isBlank())) {
@@ -42,6 +43,10 @@ public class FacultyController {
         }else {
             return ResponseEntity.ok(Collections.emptyList());
         }
+    }
+    @GetMapping("/longest_name")
+    public ResponseEntity<String> getLongestName() {
+        return ResponseEntity.ok(facultyService.getLongestName());
     }
     @GetMapping
     public ResponseEntity<Faculty> getByNameOrColorIgnoreCase (String name, String color){
