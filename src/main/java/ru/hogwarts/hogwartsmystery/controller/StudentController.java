@@ -121,6 +121,14 @@ public class StudentController {
     public Collection<Student> getAll() {
         return studentService.getAll();
     }
+    @GetMapping("/all_thread")
+    public void uselessMetod1(){
+        studentService.uselessMetod1();
+    }
+   @GetMapping("/all_thread_tupoimetod")
+    public void uselessMetod2(){
+      studentService.uselessMetod2();
+    }
 
     @GetMapping(path = "/last5")
     public Collection<Student> getLast5Students() {

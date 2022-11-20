@@ -1,8 +1,10 @@
 package ru.hogwarts.hogwartsmystery.service;
 
+import com.sun.tools.javac.Main;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.http.converter.json.GsonBuilderUtils;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 import ru.hogwarts.hogwartsmystery.model.Avatar;
@@ -65,10 +67,12 @@ public class StudentService {
         logger.info("Was invoked method for get all students");
         return studentRepository.findAll();
     }
+
     public Collection<Student> getLast5Students() {
         logger.info("Was invoked method for get last 5 students");
         return studentRepository.findLast5Students();
     }
+
     public int countTotalAmountStudents() {
         logger.info("Was invoked method for count total amount of students");
         return studentRepository.countAllFromSchool();
@@ -78,20 +82,22 @@ public class StudentService {
         logger.info("Was invoked method for get students by age");
         return new ArrayList<>(studentRepository.findAllByAge(age));
     }
+
     public Collection<Student> getByName(String name) {
         logger.info("Was invoked method for get students by name");
         return new ArrayList<>(studentRepository.findStudentsByName(name));
     }
+
     public List<String> getAllNamesStartsWithAInOrderInUpperCase() {
         logger.info("Was invoked method for get all names starts with A");
-         return studentRepository.findAll().stream()
+        return studentRepository.findAll().stream()
                 .filter(e -> e.getName().startsWith("A"))
                 .map(e -> e.getName().toUpperCase())
                 .sorted()
                 .collect(Collectors.toList());
     }
 
-    public double findAVGAgeFromAllStudents(){
+    public double findAVGAgeFromAllStudents() {
         logger.info("Was invoked method for find average age from all students");
         //return studentRepository.findAVGAge();
         return studentRepository.findAll().stream()
@@ -140,5 +146,33 @@ public class StudentService {
         logger.info("Was invoked method for get extension");
         return fileName.substring(fileName.lastIndexOf(".") + 1);
     }
+
+    public void uselessMetod1() {
+        logger.info("Was invoked method for get all by threads");
+        List<Student> list = studentRepository.findAll();
+
+        new Thread(() -> System.out.println(list.get(0) + " " + list.get(1))).start();
+        new Thread(() -> System.out.println(list.get(2) + " " + list.get(3))).start();
+        new Thread(() -> System.out.println(list.get(4) + " " + list.get(5))).start();
+
+    }
+
+    public Object flag = new Object();
+
+    public void doOperation(int a, int b) {
+        List<Student> list = studentRepository.findAll();
+        synchronized (flag) {System.out.println(list.get(a));}
+        synchronized (flag) {System.out.println(list.get(b));}
+    }
+
+    public void uselessMetod2() {
+        new Thread(() -> doOperation(0, 1)).start();
+        new Thread(() -> doOperation(2, 3)).start();
+        new Thread(() -> doOperation(4, 5)).start();
+     //   new Thread(() -> filterAndPrintForThreads2(1, 2)).start();
+      //  new Thread(() -> filterAndPrintForThreads2(3, 4)).start();
+      //  new Thread(() -> filterAndPrintForThreads2(5, 0)).start();
+    }
+
 
 }
